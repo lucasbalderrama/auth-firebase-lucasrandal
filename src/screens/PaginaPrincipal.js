@@ -1,6 +1,5 @@
 // Lucas Randal N°18
-import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, StyleSheet, ImageBackground} from 'react-native';
+import { View, Text, Pressable, StyleSheet, ImageBackground, ScrollView } from 'react-native';
 
 export default function PaginaPrincipal({ navigation }) {
     const redirecionarLogout = () => {
@@ -26,18 +25,24 @@ export default function PaginaPrincipal({ navigation }) {
         navigation.navigate('ListarImagens');
     };
     const redirecionarUploadIMG = () => {
-        navigation.navigate('UploadFoto');
+        navigation.navigate('UploadImagens');
     };
     const redirecionarListarVideo = () => {
-        navigation.navigate('ListarVideosPorCategoria');
+        navigation.navigate('ListarVideo');
     };
     const redirecionarUploadVideo = () => {
-        navigation.navigate('UploadVideo');
+        navigation.navigate('UploadVideos');
+    };
+    const redirecionarAdicionarUsuario = () => {
+        navigation.navigate('AdicionarUsuario');
+    };
+    const redirecionarEditarUsuario = () => {
+        navigation.navigate('EditarUsuario');
     };
 
     return (
         <ImageBackground source={require('../assets/background2.jpg')} style={styles.background}>
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <View style={styles.barraSuperior}>
                     <Pressable style={styles.logoutBotao} onPress={redirecionarLogout}>
                         <Text style={styles.logoutTexto}>Logout</Text>
@@ -55,8 +60,10 @@ export default function PaginaPrincipal({ navigation }) {
                     <Pressable style={styles.atalho} onPress={redirecionarUploadIMG}>Upload IMG</Pressable>
                     <Pressable style={styles.atalho} onPress={redirecionarListarVideo}>Listar Vídeos</Pressable>
                     <Pressable style={styles.atalho} onPress={redirecionarUploadVideo}>Upload Vídeos</Pressable>
+                    <Pressable style={styles.atalho} onPress={redirecionarAdicionarUsuario}>Adicionar Usuário</Pressable>
+                    <Pressable style={styles.atalho} onPress={redirecionarEditarUsuario}>Editar Usuário</Pressable>
                 </View>
-            </View>
+            </ScrollView>
         </ImageBackground>
     );
 }
@@ -65,7 +72,7 @@ const styles = StyleSheet.create({
     background: {
         flex: 1,
         width: '100%',
-        height: '100%',
+        height: '115%',
     },
     container: {
         flex: 1,

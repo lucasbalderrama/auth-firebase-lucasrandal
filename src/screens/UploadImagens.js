@@ -1,3 +1,4 @@
+// Lucas Randal N°18
 import React, { useState } from "react";
 import { Pressable, Image, View, Text, StyleSheet, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
@@ -5,7 +6,7 @@ import s3 from "../../awsConfig";
 
 const S3_BUCKET = "bucket-storage-senai-18";
 
-const UploadFoto = ({ navigation }) => {
+const UploadImagens = ({ navigation }) => {
   const [imageUri, setImageUri] = useState(null);
 
   const escolherImagem = async () => {
@@ -59,51 +60,121 @@ const UploadFoto = ({ navigation }) => {
     }
   };
 
+  const redirecionarInicio = () => {
+    navigation.navigate('PaginaPrincipal');
+  };
+
   // Aqui está o retorno da interface
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Upload de Imagens</Text>
+      <View style={styles.barraSuperior}>
+        <Pressable style={styles.voltarBotao} onPress={redirecionarInicio}>
+          <Text style={styles.voltarTexto}>Voltar</Text>
+        </Pressable>
 
-      <Pressable onPress={escolherImagem} style={styles.button}>
-        <Text style={styles.buttonText}>Escolher Imagem</Text>
-      </Pressable>
+        <Text style={styles.titulo}>Lista de jogadores</Text>
+      </View>
 
-      {imageUri && (
-        <Image source={{ uri: imageUri }} style={styles.preview} />
-      )}
+      <View style={styles.container}>
+        <Text style={styles.titulo2}>Upload de Imagens</Text>
 
-      <Pressable onPress={uploadImage} style={styles.button}>
-        <Text style={styles.buttonText}>Fazer Upload</Text>
-      </Pressable>
-    </View>
+        <Pressable onPress={escolherImagem} style={styles.button}>
+          <Text style={styles.buttonText}>Escolher Imagem</Text>
+        </Pressable>
+
+        <View style={styles.containerPreview}>
+          {imageUri && (
+            <Image source={{ uri: imageUri }} style={styles.preview} />
+          )}
+        </View>
+
+        <Pressable onPress={uploadImage} style={styles.button}>
+          <Text style={styles.buttonText}>Fazer Upload</Text>
+        </Pressable>
+
+      </View>
+    </View >
   );
 };
+
+export default UploadImagens;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
+    padding: 16,
+    justifyContent: 'center',
+},
+  barraSuperior: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+},
+  voltarBotao: {
+    backgroundColor: 'red',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    width: 100,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 5,
+      height: 5,
+    },
+    shadowOpacity: 0.8,
   },
-  title: {
+  voltarTexto: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 16,
+  },
+  titulo: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 16,
+    marginRight: 5,
+    marginTop: 15,
+    color: 'black',
+},
+  titulo2: {
     fontSize: 20,
     marginBottom: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   button: {
-    backgroundColor: "#0080ff",
-    padding: 10,
+    backgroundColor: 'red',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 8,
-    marginVertical: 10,
+    width: 300,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 5,
+      height: 5,
+    },
+    shadowOpacity: 0.8,
+    marginBottom: 20,
   },
   buttonText: {
-    color: "#fff",
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 16,
+  },
+  containerPreview: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
   },
   preview: {
     width: 200,
     height: 200,
-    marginTop: 20,
+    marginTop: 10,
+    marginBottom: 25,
+    borderColor: 'red',
+    borderWidth: 4,
   },
 });
-
-export default UploadFoto;

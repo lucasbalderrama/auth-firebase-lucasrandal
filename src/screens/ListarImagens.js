@@ -1,3 +1,4 @@
+// Lucas Randal N°18
 import React, { useState, useEffect } from "react";
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
@@ -82,10 +83,12 @@ export default function ListarImagens({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.barraTopo}>
+            <View style={styles.barraSuperior}>
                 <Pressable style={styles.voltarBotao} onPress={redirecionarInicio}>
                     <Text style={styles.voltarTexto}>Voltar</Text>
                 </Pressable>
+
+                <Text style={styles.titulo}>Lista de Imagens</Text>
             </View>
 
             {loading ? (
@@ -113,13 +116,20 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         backgroundColor: '#fff',
-        alignItems: 'center',
     },
-    barraTopo: {
+    barraSuperior: {
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'space-between',
-        alignSelf: 'stretch',
+        alignItems: 'center',
+        marginBottom: 16,
+    },
+    titulo: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 16,
+        marginRight: 5,
+        marginTop: 15,
+        color: 'black',
     },
     voltarBotao: {
         backgroundColor: 'red',
@@ -149,10 +159,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     image: {
-        width: 250,
-        height: 250,
+        width: 350,
+        height: 300,
         borderRadius: 10,
         resizeMode: 'cover',
+        borderColor: 'red',
+        borderWidth: 4,
     },
     imageName: {
         marginTop: 8,

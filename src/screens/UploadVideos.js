@@ -1,66 +1,63 @@
+// Lucas Randal N°18
 import React, { useState } from "react";
 import {
   View,
-  Button,
   Text,
   StyleSheet,
   Alert,
   Pressable,
   TextInput,
-  Modal,
+  Modal
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
-import s3 from "../../awsConfig";
+import s3 from '../../awsConfig';
 
 const S3_BUCKET = "bucket-storage-senai-18";
 
 export default function UploadVideo({ navigation }) {
   const [video, setVideo] = useState(null);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState('');
   const [uploading, setUploading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   const pickVideo = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: "video/*",
+        type: ['video/*'],
         copyToCacheDirectory: true,
       });
 
-      const asset =
-        result.assets && result.assets.length > 0 ? result.assets[0] : result;
+      const asset = result.assets && result.assets.length > 0 ? result.assets[0] : result;
 
       if (asset && asset.uri) {
         setVideo({
           uri: asset.uri,
           name: asset.name,
-          type: asset.mimeType || "video/mp4",
+          type: asset.mimeType || 'video/mp4',
         });
-        setModalVisible(true); // Abrir modal para inserir categoria
+        setModalVisible(true);
       } else {
-        Alert.alert("Erro", "Nenhum vídeo selecionado.");
+        alert('Erro', 'Nenhum vídeo selecionado.');
       }
     } catch (error) {
-      console.error("Erro ao selecionar vídeo: ", error);
-      Alert.alert("Erro", "Não foi possível selecionar o vídeo.");
+      console.error('Erro ao selecionar vídeo: ', error);
+      alert('Erro', 'Não foi possível selecionar o vídeo.');
     }
   };
 
   const uploadVideo = async () => {
     if (!video) {
-      Alert.alert("Erro", "Por favor, selecione um vídeo.");
+      alert('Erro', 'Por favor, selecione um vídeo.');
       return;
     }
 
     if (!category.trim()) {
-      Alert.alert("Erro", "Por favor, insira um nome de categoria.");
+      alert('Erro', 'Por favor, insira um nome de categoria.');
       return;
     }
 
     try {
       setUploading(true);
-      console.log("Iniciando upload do vídeo...", video);
-
       const response = await fetch(video.uri);
       const blob = await response.blob();
       const filePath = `videos/${category}/${Date.now()}_${video.name}`;
@@ -75,46 +72,80 @@ export default function UploadVideo({ navigation }) {
       s3.upload(uploadParams, (err, data) => {
         setUploading(false);
         if (err) {
-          console.error("Erro no upload: ", err);
-          Alert.alert("Erro", "Falha no envio do vídeo");
+          console.error('Erro no upload: ', err);
+          alert('Erro', 'Falha no envio do vídeo');
         } else {
-          console.log("Vídeo enviado! URL: ", data.Location);
-          Alert.alert("Sucesso", "Vídeo enviado com sucesso!");
+          console.log('Vídeo enviado! URL: ', data.Location);
+          alert('Vídeo enviado com sucesso!');
           setVideo(null);
-          setCategory("");
+          setCategory('');
         }
       });
     } catch (error) {
-      console.error("Erro no upload: ", error);
-      Alert.alert("Erro", "Falha no envio do vídeo");
+      console.error('Erro no upload: ', error);
+      alert('Erro', 'Falha no envio do vídeo');
       setUploading(false);
     }
   };
 
+  const redirecionarInicio = () => {
+    navigation.navigate("PaginaPrincipal");
+  };
+
   return (
     <View style={styles.container}>
-      <Button title="Selecionar vídeo" onPress={pickVideo} />
-      <Modal visible={modalVisible} transparent animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text>Digite a categoria do vídeo:</Text>
+      <View style={styles.barraSuperior}>
+        <Pressable style={styles.voltarBotao} onPress={redirecionarInicio}>
+          <Text style={styles.voltarTexto}>Voltar</Text>
+        </Pressable>
+        <Text style={styles.titulo}>Upload de Vídeos</Text>
+      </View>
+
+      <View style={styles.viewSelecVideo}>
+        <Pressable style={styles.botao} onPress={pickVideo}>
+          <Text style={styles.botaoTexto}>Selecionar Vídeo</Text>
+        </Pressable>
+      </View>
+
+      {video && (
+        <View style={styles.videoInfo}>
+          <Text style={styles.videoText}>Vídeo selecionado: {video.name}</Text>
+        </View>
+      )}
+
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitulo}>Digite a categoria do vídeo:</Text>
             <TextInput
-              style={styles.input}
               value={category}
               onChangeText={setCategory}
               placeholder="Categoria"
+              style={styles.input}
             />
-            <Button
-              title={uploading ? "Enviando..." : "Enviar vídeo"}
-              onPress={uploadVideo}
-              disabled={uploading}
-            />
-            <Pressable onPress={() => setModalVisible(false)}>
-              <Text style={styles.cancel}>Cancelar</Text>
+            <Pressable
+              style={styles.botao}
+              onPress={() => {
+                setModalVisible(false);
+                uploadVideo();
+              }}
+            >
+              <Text style={styles.botaoTexto}>Enviar Vídeo</Text>
             </Pressable>
           </View>
         </View>
       </Modal>
+
+      {uploading && (
+        <View style={styles.uploadingContainer}>
+          <Text style={styles.uploadingTexto}>Enviando vídeo...</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -123,30 +154,108 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    justifyContent: "center",
+  },
+  viewSelecVideo: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  barraSuperior: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  voltarBotao: {
+    backgroundColor: 'red',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    width: 100,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 5,
+      height: 5,
+    },
+    shadowOpacity: 0.8,
+  },
+  voltarTexto: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 16,
+  },
+  titulo: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 16,
+    marginRight: 5,
+    marginTop: 15,
+    color: 'black',
+  },
+  botao: {
+    backgroundColor: 'red',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    width: 300,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 5,
+      height: 5,
+    },
+    shadowOpacity: 0.8,
+  },
+  botaoTexto: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 16,
+  },
+  videoInfo: {
+    marginTop: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+  },
+  videoText: {
+    fontSize: 16,
+    color: '#333',
+    fontFamily: 'Gotham, sans-serif',
+    textAlign: 'center',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContainer: {
-    flex: 1,
-    backgroundColor: "#000000aa",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalContent: {
-    backgroundColor: "#fff",
-    padding: 20,
+    margin: 20,
+    backgroundColor: 'white',
     borderRadius: 10,
-    width: "80%",
+    padding: 20,
+  },
+  modalTitulo: {
+    marginBottom: 10,
+    fontSize: 16,
+    fontWeight: '500',
+    fontFamily: 'Gotham, sans-serif',
   },
   input: {
-    borderColor: "#ccc",
     borderWidth: 1,
-    padding: 8,
-    marginVertical: 12,
+    borderColor: '#ccc',
+    padding: 12,
     borderRadius: 5,
+    marginBottom: 20,
   },
-  cancel: {
-    color: "red",
-    marginTop: 10,
-    textAlign: "center",
+  uploadingContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+  },
+  uploadingTexto: {
+    fontSize: 16,
+    color: '#666',
   },
 });

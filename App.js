@@ -11,9 +11,11 @@ import ListarJogadores from './src/screens/ListarJogadores.js';
 import Lampada from './src/screens/Lampada.js';
 import CalcularIMC from './src/screens/CalcularIMC.js';
 import ListarImagens from './src/screens/ListarImagens.js';
-import UploadFoto from './src/screens/UploadImagens.js';
-import ListarVideosPorCategoria from './src/screens/ListarVideo.js';
-import UploadVideo from './src/screens/UploadVideos.js';
+import UploadImagens from './src/screens/UploadImagens.js';
+import ListarVideo from './src/screens/ListarVideo.js';
+import UploadVideos from './src/screens/UploadVideos.js';
+import AdicionarUsuario from './src/screens/AdicionarUsuario.js';
+import EditarUsuario from './src/screens/EditarUsuario.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,9 +30,11 @@ const App = () => (
       <Stack.Screen name="Lampada" component={Lampada} />
       <Stack.Screen name="CalcularIMC" component={CalcularIMC} />
       <Stack.Screen name="ListarImagens" component={ListarImagens} />
-      <Stack.Screen name="UploadFoto" component={UploadFoto} />
-      <Stack.Screen name="ListarVideosPorCategoria" component={ListarVideosPorCategoria} />
-      <Stack.Screen name="UploadVideo" component={UploadVideo} />
+      <Stack.Screen name="UploadImagens" component={UploadImagens} />
+      <Stack.Screen name="ListarVideo" component={ListarVideo} />
+      <Stack.Screen name="UploadVideos" component={UploadVideos} />
+      <Stack.Screen name="AdicionarUsuario" component={AdicionarUsuario} />
+      <Stack.Screen name="EditarUsuario" component={EditarUsuario} />
     </Stack.Navigator>
   </NavigationContainer>
 );

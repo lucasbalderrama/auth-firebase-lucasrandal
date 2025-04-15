@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         marginRight: 5,
         marginTop: 15,
-        color: 'white',
+        color: 'black',
     },
     voltarBotao: {
         backgroundColor: 'red',
