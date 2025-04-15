@@ -22,6 +22,18 @@ export default function PaginaPrincipal({ navigation }) {
     const redirecionarCalcularIMC = () => {
         navigation.navigate('CalcularIMC');
     };
+    const redirecionarListarIMG = () => {
+        navigation.navigate('ListarImagens');
+    };
+    const redirecionarUploadIMG = () => {
+        navigation.navigate('UploadFoto');
+    };
+    const redirecionarListarVideo = () => {
+        navigation.navigate('ListarVideosPorCategoria');
+    };
+    const redirecionarUploadVideo = () => {
+        navigation.navigate('UploadVideo');
+    };
 
     return (
         <ImageBackground source={require('../assets/background2.jpg')} style={styles.background}>
@@ -39,6 +51,10 @@ export default function PaginaPrincipal({ navigation }) {
                     <Pressable style={styles.atalho} onPress={redirecionarListarJogadores}>Listar Jogadores</Pressable>
                     <Pressable style={styles.atalho} onPress={redirecionarLampada}>Lâmpada</Pressable>
                     <Pressable style={styles.atalho} onPress={redirecionarCalcularIMC}>Calcular IMC</Pressable>
+                    <Pressable style={styles.atalho} onPress={redirecionarListarIMG}>Listar IMG</Pressable>
+                    <Pressable style={styles.atalho} onPress={redirecionarUploadIMG}>Upload IMG</Pressable>
+                    <Pressable style={styles.atalho} onPress={redirecionarListarVideo}>Listar Vídeos</Pressable>
+                    <Pressable style={styles.atalho} onPress={redirecionarUploadVideo}>Upload Vídeos</Pressable>
                 </View>
             </View>
         </ImageBackground>

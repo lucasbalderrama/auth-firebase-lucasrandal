@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, StyleSheet, ImageBackground, ScrollView, Alert, Modal, TextInput } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
-import { db, app } from "../../firebaseConfig";
-import { collection, getDocs, getFirestore, addDoc, updateDoc, doc, Timestamp, deleteDoc } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
+import { collection, getDocs, addDoc, updateDoc, doc, Timestamp, deleteDoc } from "firebase/firestore";
 import { format } from "date-fns";
 import { parse } from "date-fns";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -173,58 +173,23 @@ export default function ListarJogadores({ navigation }) {
                 animationType="fade"
                 onRequestClose={() => setConfirmarModalVisible(false)}
             >
-                <View style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'rgba(0,0,0,0.6)'
-                }}>
-                    <View style={{
-                        backgroundColor: 'white',
-                        padding: 24,
-                        borderRadius: 10,
-                        width: '80%',
-                        alignItems: 'center'
-                    }}>
+                <View style={styles.modalContainer2}>
+                    <View style={styles.viewModal2}>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Confirmar Exclusão</Text>
                         <Text style={{ marginBottom: 20 }}>Tem certeza que deseja excluir este jogador?</Text>
                         <View style={{ flexDirection: 'row', gap: 10 }}>
                             <Pressable
                                 onPress={() => setConfirmarModalVisible(false)}
-                                style={{
-                                    padding: 10,
-                                    backgroundColor: '#ccc',
-                                    borderRadius: 8,
-                                    minWidth: 80,
-                                    alignItems: 'center',
-                                    shadowColor: "#000",
-                                    shadowOffset: {
-                                        width: 5,
-                                        height: 5,
-                                    },
-                                    shadowOpacity: 0.8,
-                                }}
+                                style={styles.botaoCancelar2}
                             >
-                                <Text style={{ fontWeight: 'bold' }}>Cancelar</Text>
+                                <Text style={styles.textoCancelar2}>Cancelar</Text>
                             </Pressable>
 
                             <Pressable
                                 onPress={confirmarExclusao}
-                                style={{
-                                    padding: 10,
-                                    backgroundColor: 'red',
-                                    borderRadius: 8,
-                                    minWidth: 80,
-                                    alignItems: 'center',
-                                    shadowColor: "#000",
-                                    shadowOffset: {
-                                        width: 5,
-                                        height: 5,
-                                    },
-                                    shadowOpacity: 0.8,
-                                }}
+                                style={styles.botaoExcluir}
                             >
-                                <Text style={{ color: '#fff', fontWeight: 'bold' }}>Excluir</Text>
+                                <Text style={styles.textoExcluir}>Excluir</Text>
                             </Pressable>
                         </View>
                     </View>
@@ -439,6 +404,22 @@ const styles = StyleSheet.create({
         color: "#000",
         fontWeight: "bold",
     },
+    botaoCancelar2: {
+        padding: 10,
+        backgroundColor: '#ccc',
+        borderRadius: 8,
+        minWidth: 80,
+        alignItems: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 5,
+            height: 5,
+        },
+        shadowOpacity: 0.8,
+    },
+    textoCancelar2: {
+        fontWeight: 'bold',
+    },
     viewBotaoAddJogadores: {
         alignItems: 'center',
         display: 'flex',
@@ -458,5 +439,35 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 5,
         width: 300,
+    },
+    botaoExcluir: {
+        padding: 10,
+        backgroundColor: 'red',
+        borderRadius: 8,
+        minWidth: 80,
+        alignItems: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 5,
+            height: 5,
+        },
+        shadowOpacity: 0.8,
+    },
+    textoExcluir: {
+        color: '#fff',
+        fontWeight: 'bold'
+    },
+    modalContainer2: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.6)',
+    },
+    viewModal2: {
+        backgroundColor: 'white',
+        padding: 24,
+        borderRadius: 10,
+        width: '80%',
+        alignItems: 'center'
     },
 });
